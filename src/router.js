@@ -2,10 +2,28 @@ import React from 'react'
 import Router from 'ampersand-router'
 import PublicPage from './pages/public'
 import ReposPage from './pages/repos'
-import styles from './styles/styles.styl'
+import Layout from './layout'
+import styles from './styles/main.styl'
 
-// history stored in a single history object
+/*
+ * NOTES:
+ * - history stored in a single history object
+ *
+*/
+
 export default Router.extend({
+  // all pages, unless specified, will be rendered within the Layout component
+  renderPage (page, options = {layout: true}) {
+    if (options.layout) {
+      page = (
+        <Layout>
+          {page}
+        </Layout>
+      )
+    }
+
+    React.render(page, document.body)
+  },
   // empty string means root dir
   // when in root dir, run `public()`
   routes: {
@@ -14,10 +32,10 @@ export default Router.extend({
   },
 
   public () {
-    React.render(<PublicPage style={styles} />, document.body)
+    this.renderPage(<PublicPage />, {layout: false})
   },
 
   repos () {
-    React.render(<ReposPage />, document.body)
+    this.renderPage(<ReposPage />)
   }
 })
