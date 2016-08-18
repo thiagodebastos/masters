@@ -1,4 +1,8 @@
+import React from 'react'
 import Router from 'ampersand-router'
+import PublicPage from './pages/public'
+import ReposPage from './pages/repos'
+import styles from './styles/styles.styl'
 
 // history stored in a single history object
 export default Router.extend({
@@ -10,10 +14,10 @@ export default Router.extend({
   },
 
   public () {
-    console.log('public page')
+    React.render(<PublicPage style={styles} />, document.body)
   },
 
   repos () {
-    console.log('repos')
+    React.render(<ReposPage />, document.body)
   }
 })
