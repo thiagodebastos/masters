@@ -32,6 +32,7 @@ export default Router.extend({
     '': 'public',
     'repos': 'repos',
     'login': 'login',
+    'logout': 'logout',
     'auth/callback?:query': 'authCallback'
   },
 
@@ -68,12 +69,23 @@ export default Router.extend({
     // json: true will automatically parse json and return an object
     // the fat arrow function will bind `this` to parent's context, in this
     // case the router
+    // Once the user is logged in, route to '/repos' page
     xhr({
       url: 'https://dry-waters-22640.herokuapp.com/authenticate/' + query.code,
       json: true
       }, (err, req, body) => {
         console.log(body)
         app.me.token = body.token
+        this.redirectTo('/repos')
       })
+  },
+
+  // to log out we clear the localStorage containing private information and
+  // reroute back to the homepage
+  // NOTE: the user will still be logged in to Github
+  logout () {
+    window.localStorage.clear()
+    window.location = '/'
   }
+
 })
